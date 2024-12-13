@@ -1,0 +1,30 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/tvGroupName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del Grupo"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvGroupDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descripción del Grupo"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"/>
+
+    <Button
+        android:id="@+id/btnViewMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver Miembros"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
