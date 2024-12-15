@@ -20,22 +20,34 @@
         </activity>
 
         <!-- Login y Registro -->
-        <activity android:name=".activities.LoginActivity"/>
-        <activity android:name=".activities.RegisterActivity"/>
+        <activity android:name=".activities.LoginActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".activities.RegisterActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
 
         <!-- Gestión de Grupos -->
-        <activity android:name=".activities.GroupsActivity"/>
-        <activity android:name=".activities.AddGroupActivity"/>
-        <activity android:name=".activities.GroupDetailsActivity"/>
+        <activity android:name=".activities.GroupsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".activities.AddGroupActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".activities.GroupDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <!-- Gestión de Gastos -->
-        <activity android:name=".activities.AddExpenseActivity"/>
+        <activity android:name=".activities.AddExpenseActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <!-- Gestión de Miembros -->
-        <activity android:name=".activities.GroupMembersActivity"/>
+        <activity android:name=".activities.GroupMembersActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <!-- Saldar Deudas -->
-        <activity android:name=".activities.SettleDebtsActivity"/>
+        <activity android:name=".activities.SettleDebtsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+
 
     </application>
 

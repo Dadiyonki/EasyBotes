@@ -32,13 +32,11 @@ public class GroupDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_details);
 
         // Inicializar vistas
-        tvGroupName = findViewById(R.id.tvGroupName);
-        tvGroupDescription = findViewById(R.id.tvGroupDescription);
+        tvGroupName = findViewById(R.id.group_details_title);
         tvGroupBalance = findViewById(R.id.group_total_expenses);
-        lvExpenses = findViewById(R.id.expenses_list);
+        lvExpenses = findViewById(R.id.lvExpenses);
         btnAddExpense = findViewById(R.id.btnAddExpense);
         btnSettleDebts = findViewById(R.id.btnSettleDebts);
-        btnViewMembers = findViewById(R.id.btnViewMembers);
 
         db = new DatabaseHelper(this);
 
@@ -49,7 +47,6 @@ public class GroupDetailsActivity extends AppCompatActivity {
 
         // Mostrar los detalles del grupo
         tvGroupName.setText(groupName);
-        tvGroupDescription.setText(groupDescription);
 
         // Cargar el balance del grupo
         loadGroupBalance();
@@ -72,16 +69,6 @@ public class GroupDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GroupDetailsActivity.this, SettleDebtsActivity.class);
-                intent.putExtra("GROUP_ID", groupId);
-                startActivity(intent);
-            }
-        });
-
-        // Botón para ver los miembros del grupo
-        btnViewMembers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroupDetailsActivity.this, GroupMembersActivity.class);
                 intent.putExtra("GROUP_ID", groupId);
                 startActivity(intent);
             }

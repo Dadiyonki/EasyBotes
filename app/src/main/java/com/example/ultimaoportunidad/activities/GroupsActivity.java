@@ -3,12 +3,9 @@ package com.example.ultimaoportunidad.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,38 +43,9 @@ public class GroupsActivity extends AppCompatActivity {
         loadGroups(username);
 
         // Botón para añadir un nuevo grupo
-        btnAddGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GroupsActivity.this, AddGroupActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        // Eliminar un grupo mediante long click
-        lvGroups.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Group selectedGroup = groupList.get(position);
-                db.deleteGroup(selectedGroup.getId());
-                Toast.makeText(GroupsActivity.this, "Grupo eliminado", Toast.LENGTH_SHORT).show();
-                loadGroups(username); // Recargar la lista después de eliminar
-                return true;
-            }
-        });
-
-        lvGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Group selectedGroup = groupList.get(position);
-        
-                Intent intent = new Intent(GroupsActivity.this, GroupDetailsActivity.class);
-                intent.putExtra("GROUP_ID", selectedGroup.getId());
-                intent.putExtra("GROUP_NAME", selectedGroup.getName());
-                intent.putExtra("GROUP_DESCRIPTION", selectedGroup.getDescription());
-        
-                startActivity(intent);
-            }
+        btnAddGroup.setOnClickListener(v -> {
+            Intent intent = new Intent(GroupsActivity.this, AddGroupActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -99,7 +67,7 @@ public class GroupsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Recargar los grupos al volver de AddGroupActivity
         loadGroups(session.getUsername());
     }
 }
+

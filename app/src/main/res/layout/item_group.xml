@@ -21,10 +21,22 @@
         android:textSize="14sp"
         android:layout_marginTop="4dp"/>
 
-    <Button
-        android:id="@+id/btnViewMembers"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ver Miembros"
-        android:layout_marginTop="8dp"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnViewDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver Detalles"/>
+
+        <Button
+            android:id="@+id/btnViewMembers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ver Miembros"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
 </LinearLayout>

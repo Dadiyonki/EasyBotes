@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ultimaoportunidad.R;
 import com.example.ultimaoportunidad.database.DatabaseHelper;
+import com.example.ultimaoportunidad.utils.SessionManager;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
@@ -17,6 +18,8 @@ public class AddExpenseActivity extends AppCompatActivity {
     Button btnAddExpense;
     DatabaseHelper db;
     int groupId;
+    SessionManager session;
+    String username = session.getUsername();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         // Obtener el ID del grupo desde el intent
         groupId = getIntent().getIntExtra("GROUP_ID", -1);
 
+        session = new SessionManager(this);
+        username = session.getUsername();
+
         btnAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +50,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     Toast.makeText(AddExpenseActivity.this, "Por favor, completa todos los campos obligatorios", Toast.LENGTH_SHORT).show();
                 } else {
                     float expenseAmount = Float.parseFloat(expenseAmountStr);
-                    boolean isInserted = db.insertExpense(expenseName, expenseAmount, expenseDescription, groupId);
+                    boolean isInserted = db.insertExpense(expenseName, expenseAmount, expenseDescription, groupId, username);
 
                     if (isInserted) {
                         Toast.makeText(AddExpenseActivity.this, "Gasto añadido exitosamente", Toast.LENGTH_SHORT).show();

@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:text="Logout"
         android:textColor="@color/white"
-        android:background="?attr/selectableItemBackground"
         android:layout_gravity="end"
         android:padding="8dp" />
 </androidx.appcompat.widget.Toolbar>

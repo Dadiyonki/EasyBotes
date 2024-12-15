@@ -42,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (db.checkUser(username, password)) {
                     session.createSession(username);
                     Toast.makeText(LoginActivity.this, "Login exitoso", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LoginActivity.this, GroupsActivity.class);
+                    startActivity(intent);
+                    finish();
                     // Redireccionar a otra actividad
                 } else {
                     Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();

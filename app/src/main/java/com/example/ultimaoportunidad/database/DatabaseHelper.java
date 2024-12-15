@@ -15,7 +15,7 @@ import com.example.ultimaoportunidad.models.Member;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "gestion_gastos.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     // Table Name
     public static final String TABLE_USERS = "users";
@@ -37,14 +37,49 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_USERS_TABLE);
+        // Crear tabla de usuarios
+        db.execSQL("CREATE TABLE users (" +
+                "username TEXT PRIMARY KEY, " +
+                "passwd TEXT NOT NULL, " +
+                "email TEXT NOT NULL, " +
+                "user_img BLOB)");
+
+        // Crear tabla de proyectos
+        db.execSQL("CREATE TABLE projects (" +
+                "id_proj INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name_proj TEXT NOT NULL, " +
+                "description TEXT, " +
+                "proj_img BLOB)");
+
+        db.execSQL("CREATE TABLE payments (" +
+                "id_payments INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name_payment TEXT NOT NULL, " +
+                "amount REAL NOT NULL, " +
+                "description TEXT, " +
+                "username TEXT, " +
+                "id_proj INTEGER, " +
+                "FOREIGN KEY (username) REFERENCES users(username), " +
+                "FOREIGN KEY (id_proj) REFERENCES projects(id_proj) ON DELETE CASCADE)");
+
+        // Crear tabla de miembros
+        db.execSQL("CREATE TABLE members (" +
+                "id_proj INTEGER, " +
+                "username TEXT, " +
+                "PRIMARY KEY (id_proj, username), " +
+                "FOREIGN KEY (id_proj) REFERENCES projects(id_proj) ON DELETE CASCADE, " +
+                "FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE)");
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS users");
+        db.execSQL("DROP TABLE IF EXISTS projects");
+        db.execSQL("DROP TABLE IF EXISTS payments");
+        db.execSQL("DROP TABLE IF EXISTS members");
         onCreate(db);
     }
+
 
     // Insert User
     public boolean insertUser(String username, String email, String password) {
@@ -86,6 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("id_proj"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow("name_proj"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+
                 groups.add(new Group(id, name, description));
             } while (cursor.moveToNext());
         }
@@ -94,14 +130,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return groups;
     }
 
-    public boolean insertGroup(String groupName, String groupDescription) {
+    public boolean insertGroup(String name, String description, String username) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name_proj", groupName);
-        values.put("description", groupDescription);
+        values.put("name_proj", name);
+        values.put("description", description);
 
-        long result = db.insert("projects", null, values);
-        return result != -1;
+        long projectId = db.insert("projects", null, values);
+
+        if (projectId == -1) {
+            return false; // Error al insertar el proyecto
+        }
+
+        // Insertar en la tabla members para asociar el grupo con el usuario
+        ContentValues memberValues = new ContentValues();
+        memberValues.put("id_proj", projectId);
+        memberValues.put("username", username);
+
+        long memberId = db.insert("members", null, memberValues);
+
+        return memberId != -1; // Devuelve true si se insertó correctamente
     }
 
     public void deleteGroup(int groupId) {
@@ -129,27 +177,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return expenses;
     }
 
-    public float getGroupBalance(int groupId) {
+    public float getGroupBalance(int projectId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT SUM(amount) as total FROM payments WHERE id_proj = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(groupId)});
+        float total = 0.0f;
 
-        float balance = 0;
+        String query = "SELECT SUM(amount) as total FROM payments WHERE id_proj = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(projectId)});
+
         if (cursor.moveToFirst()) {
-            balance = cursor.getFloat(cursor.getColumnIndexOrThrow("total"));
+            total = cursor.getFloat(cursor.getColumnIndexOrThrow("total"));
         }
 
         cursor.close();
-        return balance;
+        return total;
     }
 
-    public boolean insertExpense(String name, float amount, String description, int groupId) {
+
+
+    public boolean insertExpense(String name, float amount, String description, int projectId, String username) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name_payment", name);
         values.put("amount", amount);
         values.put("description", description);
-        values.put("id_proj", groupId);
+        values.put("id_proj", projectId);
+        values.put("username", username);
 
         long result = db.insert("payments", null, values);
         return result != -1;

@@ -30,33 +30,32 @@
             android:padding="10dp"
             android:layout_marginBottom="10dp" />
 
-        <LinearLayout
-            android:id="@+id/expenses_list"
+        <!-- Reemplazar el LinearLayout con un ListView -->
+        <ListView
+            android:id="@+id/lvExpenses"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:layout_weight="1" />
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
 
             <Button
                 android:id="@+id/btnAddExpense"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="+ Añadir Gasto"/>
+                android:text="+ Añadir Gasto" />
 
             <Button
                 android:id="@+id/btnSettleDebts"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Saldar Deudas"/>
+                android:text="Saldar Deudas" />
         </LinearLayout>
 
     </LinearLayout>
